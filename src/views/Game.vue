@@ -2,6 +2,22 @@
   <v-app>
     <Question/>
     <Chat/>
+    <!-- ログイン -->
+    <v-dialog v-model="cannotFind" max-width="300">
+      <v-card>
+        <v-card-title>
+          <v-icon color="green">mdi-check-bold</v-icon>回答完了
+        </v-card-title>
+        <v-card-text>
+          Cookieからユーザー情報が見つかりませんでした。<br />
+          再度ログインを行ってください。<br />
+          OKを押すことでログインページへ飛びます
+        </v-card-text>
+        <v-card-actions>
+          <v-btn @click="login">OK</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -9,7 +25,7 @@
 import Question from '@/components/Question'
 import Chat from '@/components/Chat'
 import axios from 'axios'
-const { clientId, webhook } = require('@/../config.json')
+const { clientId, webhook } = require('@/config.json')
 
 export default {
   name: 'Game',
@@ -22,25 +38,21 @@ export default {
     this.submit()
   },
   data: () => ({
-    success_dialog: false,
+    cannotFind: false,
     message: null,
     webhook_url: webhook
   }),
   methods: {
     submit () {
       const data = {
-        username: this.userData.username,
-        avatar_url: `https://cdn.discordapp.com/avatars/${this.userData.id}/${this.userData.avatar}.png`,
-        content: 'Vocaleagueに参加しました'
+        content: `__**${this.userData.username}**__ がVocaleagueに参加しました`
       }
-      axios.post(this.webhook_url, data).then(() => {
-        this.success_dialog = true
-      })
+      axios.post(this.webhook_url, data)
     },
     load () {
       this.userData = this.$cookies.get('userData')
       if (!this.userData) {
-        this.login()
+        this.cannotFind = true
       }
       console.log(this.userData)
     },

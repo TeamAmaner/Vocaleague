@@ -8,7 +8,7 @@
 </template>
 
 <script>
-const { clientId, webhook } = require('@/../config.json')
+const { clientId, webhook } = require('@/config.json')
 
 export default {
   name: 'Me',

@@ -9,7 +9,7 @@
 
 <script>
 
-const { clientId, clientSecret, port } = require('@/../config.json')
+const { clientId, clientSecret, port } = require('@/config.json')
 
 export default {
   name: 'Callback',

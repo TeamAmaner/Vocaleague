@@ -7,7 +7,7 @@
 </template>
 
 <script>
-const { clientId } = require('@/../config.json')
+const { clientId } = require('@/config.json')
 
 export default {
   name: 'Login',

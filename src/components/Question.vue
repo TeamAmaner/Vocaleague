@@ -35,11 +35,12 @@
 
 <script>
 import axios from 'axios'
-const { webhook } = require('@/../config.json')
+const { webhook } = require('@/config.json')
 
 export default {
   name: 'Question',
   created: function () {
+    this.load()
     this.give()
   },
   data: () => ({
@@ -65,14 +66,17 @@ export default {
     submit () {
       if (this.$refs.messageForm.validate()) {
         const data = {
-          username: 'Zect',
-          avatar_url: 'https://github.com/soundcloud.png',
+          username: this.userData.username,
+          avatar_url: `https://cdn.discordapp.com/avatars/${this.userData.id}/${this.userData.avatar}.png`,
           content: this.message
         }
         axios.post(this.webhook_url, data).then(() => {
           this.success_dialog = true
         })
       }
+    },
+    load () {
+      this.userData = this.$cookies.get('userData')
     }
   }
 }

@@ -35,7 +35,7 @@
 
 <script>
 import axios from 'axios'
-const { webhook } = require('@/../config.json')
+const { webhook } = require('@/config.json')
 
 export default {
   name: 'PostForm',
