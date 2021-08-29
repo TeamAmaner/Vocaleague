@@ -1,15 +1,10 @@
-from bot import Zect
+from bot import Vocaleague
 import setting
 
-bot = Zect()
+bot = Vocaleague()
 
 BOT_TOKEN = setting.BOT
 
-extensions = [
-    "cogs.admin",
-]
-
-for extension in extensions:
-    bot.load_extension(extension)
+bot.load_extension("add")
 
 bot.run(BOT_TOKEN)
