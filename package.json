@@ -5,11 +5,15 @@
   "scripts": {
     "serve": "vue-cli-service serve --fix",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "json-server": "json-server --watch ./src/db.json --port 8050"
   },
   "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "discord-api-types": "^0.22.0",
+    "discord.js": "^13.1.0",
     "fs": "^0.0.1-security",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.4",
