@@ -35,7 +35,7 @@ export default {
   },
   created: function () {
     this.load()
-    this.submit()
+    // this.logon()
   },
   data: () => ({
     cannotFind: false,
@@ -43,7 +43,7 @@ export default {
     webhook_url: webhook
   }),
   methods: {
-    submit () {
+    logon () {
       const data = {
         content: `__**${this.userData.username}**__ がVocaleagueに参加しました`
       }

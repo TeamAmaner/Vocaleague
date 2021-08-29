@@ -10,6 +10,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
+        <v-btn @click="give">リロード</v-btn>
         <v-btn @click="submit">送信</v-btn>
       </v-card-actions>
     </v-card>
@@ -36,6 +37,8 @@
 <script>
 import axios from 'axios'
 const { webhook } = require('@/config.json')
+const { youtube, niconico } = require('@/question.json')
+// const path = require('path')
 
 export default {
   name: 'Question',
@@ -49,19 +52,36 @@ export default {
     webhook_url: webhook,
     required: value => !!value || '解答は必須項目です。',
     lylic: '',
-    answer: ''
+    answer: '',
+    songURL: 'https://www.nicovideo.jp/watch/sm37420134'
   }),
   methods: {
     async give () {
-      const url = 'https://www.nicovideo.jp/watch/sm37420134'
-      const res = await fetch(`https://vocadb.net/api/songs?query=${url}&maxResults=1&fields=Lyrics`)
+      this.getURL()
+      const res = await fetch(`https://vocadb.net/api/songs?query=${this.songURL}&maxResults=1&fields=Lyrics`)
       const resJson = await res.json()
-      console.log(resJson)
+      // console.log(resJson)
       const song = resJson.items[0]
       // const song = songs[0];
       console.log(song)
       this.lylic = song.lyrics[0].value.replace('\r', '').split('\n\n')[0]
       this.answer = song.defaultName
+    },
+    getURL () {
+      switch (Math.floor(Math.random() * 2)) {
+        case 0: {
+          const songIndex = Math.floor(Math.random() * youtube.length)
+          this.songURL = `https://www.youtube.com/watch?v=${youtube[songIndex]}`
+          break
+        }
+        case 1: {
+          const songIndex = Math.floor(Math.random() * niconico.length)
+          this.songURL = `https://www.nicovideo.jp/watch/${niconico[songIndex]}`
+          break
+        }
+        default:
+          break
+      }
     },
     submit () {
       if (this.$refs.messageForm.validate()) {
@@ -72,6 +92,7 @@ export default {
         }
         axios.post(this.webhook_url, data).then(() => {
           this.success_dialog = true
+          this.give()
         })
       }
     },
