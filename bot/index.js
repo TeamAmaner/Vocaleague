@@ -12,14 +12,23 @@ client.on('interactionCreate', async interaction => {
 
 	const { commandName } = interaction;
 
-	if (commandName === 'add') {
-		const url = interaction.options.getString('url')
-		if (!url) {
-			await interaction.reply("楽曲urlを指定してね\nusage: /add [ Youtube_url | NicoNico_url ]")
-			return;
-		}
-		await interaction.reply(`${url} を追加するよー`);
-	}
+  switch (commandName) {
+    case 'add':
+      await addUrl(interaction);
+      break;
+    default:
+      break;
+  }
 });
+
+async function addUrl (interaction) {
+  const url = interaction.options.getString('url')
+  if (!url) {
+    await interaction.reply("楽曲urlを指定してね\nusage: /add [ Youtube_url | NicoNico_url ]")
+    return;
+  }
+  
+  await interaction.reply(`${url} を追加するよー`);
+}
 
 client.login(token);
