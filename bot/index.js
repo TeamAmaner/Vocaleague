@@ -21,6 +21,10 @@ client.on('interactionCreate', async interaction => {
     await interaction.reply("楽曲urlを指定してね\nusage: /add [ Youtube_url | NicoNico_url ]")
     return;
   }
+	if (!url.startsWith('http')) {
+    await interaction.reply("楽曲 __**url**__ を指定してね\nusage: /add [ Youtube_url | NicoNico_url ]")
+    return;
+	}
 	
 	request.get({
 		uri: 'https://vocadb.net/api/songs',
@@ -50,6 +54,7 @@ client.on('interactionCreate', async interaction => {
 		} else if (url.startsWith('https://youtu.be/')) {
 			await addToJson(url, 'https://youtu.be/', 'youtube', interaction);
 		}
+		if (interaction.replied) {return;}
 		await interaction.reply(`__**${data.items[0].name}**__ が正常に追加されました`);
 		console.info(`${data.items[0].name} has been added.`)
 	}); 
@@ -61,18 +66,18 @@ async function addToJson (url, baseUrl, type, interaction) {
 	const songid = url.replace(baseUrl, '');
 	switch (type) {
 		case 'niconico':
-			if (niconico.indexOf(songid) === -1) {
+			if (niconico.indexOf(songid) !== -1) {
 				await interaction.reply('この曲は既に追加されてます');
-				return;
+			} else {
+				niconico.push(songid);
 			}
-			niconico.push(songid);
 			break;
 		case 'youtube':
-			if (youtube.indexOf(songid) === -1) {
+			if (youtube.indexOf(songid) !== -1) {
 				await interaction.reply('この曲は既に追加されてます');
-				return;
+			} else {
+				youtube.push(songid);
 			}
-			youtube.push(songid);
 			break;
 		default:
 			await interaction.reply('エラーが発生しました。')
