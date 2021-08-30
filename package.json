@@ -6,10 +6,11 @@
     "serve": "vue-cli-service serve --fix",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "bot": "concurrently \"npm run bot-deploy\" \"npm run bot-start\"",
+    "bot-deploy": "node ./bot/deploy.js",
+    "bot-start": "node ./bot/index.js",
     "json-server": "json-server --watch ./src/db.json --port 8050",
-    "bot-start": "node ./index.js",
-    "bot-deploy": "node ./deploy.js",
-    "bot": "concurrently \"npm run bot-deploy\" \"npm run bot-start\""
+    "test": "concurrently \"npm run bot-deploy\" \"npm run bot-start\" \"npm run json-server\""
   },
   "dependencies": {
     "@discordjs/rest": "^0.1.0-canary.0",
@@ -21,12 +22,14 @@
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.4",
     "vue-router": "^3.2.0",
-    "vuetify": "^2.4.0"
+    "vuetify": "^2.4.0",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
+    "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
