@@ -6,7 +6,10 @@
     "serve": "vue-cli-service serve --fix",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "json-server": "json-server --watch ./src/db.json --port 8050"
+    "json-server": "json-server --watch ./src/db.json --port 8050",
+    "bot-start": "node ./index.js",
+    "bot-deploy": "node ./deploy.js",
+    "bot": "concurrently \"npm run bot-deploy\" \"npm run bot-start\""
   },
   "dependencies": {
     "@discordjs/rest": "^0.1.0-canary.0",
@@ -27,6 +30,7 @@
     "@vue/cli-service": "~4.5.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
+    "concurrently": "^6.2.0",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
