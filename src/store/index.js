@@ -1,28 +1,79 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { reactive, toRefs } from 'vue'
 import axios from 'axios'
 
-Vue.use(Vuex)
+const state = reactive({
+  error: null,
+  currentUser: {},
+  Answers: []
+})
 
-// .envファイルから環境変数(トークン・URLを読み込ませる)
-var BASE_URL = 'http://localhost:8050'
+const instance = axios.create({
+  baseURL: 'http://localhost:8050'
+})
 
-export default new Vuex.Store({
-  actions: {
-    get_event (context, param) {
-      return axios.get(BASE_URL + param, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        responseType: 'json'
-      }).then(() => {
-        // レスポンスが200の時の処理
-        console.log('取れたよ')
-      }).catch(err => {
-        if (err.response) {
-          // レスポンスが200以外の時の処理
-        }
-      })
+export default function () {
+  const setUser = async (userId) => {
+    try {
+      const data = await instance.get('/users/' + userId).then((res) => res.data)
+      state.currentUser = data
+
+      sessionStorage.setItem('user', JSON.stringify(state.currentUser))
+    } catch (err) {
+      state.error = err
     }
   }
-})
+
+  const getAnswers = async () => {
+    try {
+      const data = await instance.get('/answers').then((res) => res.data)
+      state.Answers = data
+    } catch (err) {
+      state.error = err
+    }
+  }
+
+  const addAnswer = async (msgData) => {
+    const userData = await getUserData(msgData.userId)
+
+    const data = {
+      ...msgData,
+      ...userData
+    }
+
+    state.Answers = [...state.Answers, data]
+  }
+
+  const getUserData = async (userId) => {
+    const user = await instance.get('/users/' + userId).then((res) => res.data)
+    return {
+      id: user.id,
+      name: user.name
+    }
+  }
+
+  const sendMessage = async (answer, id, name) => {
+    try {
+      await instance
+        .post('/messages', {
+          answer,
+          id,
+          name,
+          date: new Date()
+        })
+        .then((res) => connection.send(JSON.stringify(res.data)))
+    } catch (err) {
+      state.error = err
+    }
+  }
+
+  return {
+    // States
+    ...toRefs(state),
+
+    // Actions
+    getAnswers,
+    setUser,
+    sendMessage,
+    addAnswer
+  }
+}
