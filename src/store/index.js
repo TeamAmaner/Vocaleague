@@ -4,7 +4,8 @@ import axios from 'axios'
 const state = reactive({
   error: null,
   currentUser: {},
-  Answers: []
+  Answers: [],
+  Users: []
 })
 const connection = new WebSocket('ws://localhost:8050')
 const instance = axios.create({
@@ -12,12 +13,26 @@ const instance = axios.create({
 })
 
 export default function () {
-  const setUser = async (userId) => {
+  const userLogin = async (name, id, avatar_url) => {
     try {
-      const data = await instance.get('/users/' + userId).then((res) => res.data)
-      state.currentUser = data
+      console.info(`${name} を追加`)
+      await instance
+        .post('/users', {
+          name,
+          id,
+          avatar_url
+        })
+        .then((res) => connection.send(JSON.stringify(res.data)))
+    } catch (err) {
+      state.error = err
+    }
+  }
 
-      sessionStorage.setItem('user', JSON.stringify(state.currentUser))
+  const setUsers = async () => {
+    try {
+      const data = await instance.get('/users').then((res) => res.data)
+      state.Users = data
+      // console.info(state.Users)
     } catch (err) {
       state.error = err
     }
@@ -71,8 +86,9 @@ export default function () {
     ...toRefs(state),
 
     // Actions
+    setUsers,
     getAnswers,
-    setUser,
+    userLogin,
     sendAnswer,
     addAnswer
   }

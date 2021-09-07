@@ -25,6 +25,11 @@
 import Question from '@/components/Question'
 import Chat from '@/components/Chat'
 import axios from 'axios'
+import { provide } from '@vue/runtime-core';
+
+import store from '@/store';
+provide('store', store);
+
 const { webhook, clientId } = require('@/config.json');
 
 export default {
@@ -42,6 +47,9 @@ export default {
     message: null,
     webhook_url: webhook,
   }),
+  // beforeUnmount: function () {
+  //   // axios.delete('http://localhost:8050' + '/users/' + String(this.userData.id))
+  // },
   methods: {
     logon () {
       const data = {

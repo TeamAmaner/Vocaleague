@@ -13,7 +13,8 @@
             @keyup.enter="userSendMsg"
           ></el-input>
           <el-button @click="send">追加</el-button>
-          <el-button @click="got">取得</el-button>
+          <el-button @click="check">取得</el-button>
+          <el-button @click="show">表示</el-button>
           <el-button @click="dele">削除</el-button>
         </el-form>
 
@@ -62,6 +63,27 @@ export default {
       axios.delete('http://localhost:8050' + '/answers/' + '686547120534454315').then(res => {
         console.log(res.data)
       })
+    },
+    check() {
+      const { setUsers } = store()
+      setUsers()
+      console.info('読み込んだ')
+      // const myId = this.userData.id
+      // const { currentUser, userLogin } = store()
+      // for (const u of currentUser) {
+      //   const userId = u.id
+      //   if (userId === myId) {
+      //     console.log('IDがありました')
+      //     return
+      //   }
+      // }
+      // userLogin(this.userData.username, String(this.userData.id), `https://cdn.discordapp.com/avatars/${this.userData.id}/${this.userData.avatar}.png`)
+    },
+    show() {
+      const { Users } = store()
+      for (const u of Users.value) {
+        console.log(u)
+      }
     }
   }
 }

@@ -3,8 +3,10 @@ const {
   getUserById,
   getUsers,
   postAnswer,
+  postUser,
   deleteAnswers,
-  deleteAnswerById
+  deleteAnswerById,
+  deleteUserById,
 } = require('../controllers/messages');
 
 // Message schema
@@ -76,6 +78,19 @@ const postAnswerOpts = {
   handler: postAnswer,
 };
 
+// Options for /postMessage
+const postUserOpts = {
+  schema: {
+    response: {
+      200: User,
+    },
+    response: {
+      201: User,
+    },
+  },
+  handler: postUser,
+};
+
 
 // Options for /postMessage
 const deleteAnswersOpts = {
@@ -85,6 +100,10 @@ const deleteAnswersOpts = {
 // Options for /getUserById
 const deleteAnswerByIdOpts = {
   handler: deleteAnswerById,
+};
+
+const deleteUserByIdOpts = {
+  handler: deleteUserById,
 };
 
 
@@ -101,9 +120,13 @@ function itemRoutes(fastify, options, done) {
   // Add message
   fastify.post('/answers', postAnswerOpts);
 
+  fastify.post('/users', postUserOpts);
+
   fastify.delete('/answers', deleteAnswersOpts);
 
   fastify.delete('/answers/:id', deleteAnswerByIdOpts);
+
+  fastify.delete('/users/:id', deleteUserByIdOpts);
 
   done();
 }

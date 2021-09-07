@@ -70,8 +70,6 @@ export default {
   created: function () {
     this.load()
     this.give()
-    console.log(youtube)
-    console.log(niconico)
   },
   data: () => ({
     success_dialog: false,

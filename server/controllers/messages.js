@@ -14,6 +14,7 @@ const getUserById = async (req, reply) => {
 
 const getUsers = async (req, reply) => {
   try {
+    console.log('よばれた')
     const sortByName = (a, b) => {
       if (a.name < b.name) {
         return -1;
@@ -25,7 +26,7 @@ const getUsers = async (req, reply) => {
     };
 
     const userList = await instance
-      .get(`/users?${data.join('&')}`)
+      .get(`/users`)
       .then((res) => res.data?.sort(sortByName));
 
     reply.send(userList);
@@ -84,11 +85,25 @@ const postAnswer = async (req, reply) => {
   }
 };
 
-
-const deleteAnswerById = async (req, reply) => {
+const postUser = async (req, reply) => {
   try {
-    const { id } = req.params;
-    await instance.delete('/answers/' + id).then((res) => res.data);
+    const { name, id, avatar_url } = req.body;
+
+    const msgData = {
+      name,
+      id,
+      avatar_url,
+    };
+
+    const data = await instance
+      .post('/users', JSON.stringify(msgData), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => res.data);
+
+    reply.code(201).send(data);
   } catch (err) {
     reply.send(err);
   }
@@ -103,12 +118,32 @@ const deleteAnswers = async (req, reply) => {
   }
 };
 
+const deleteAnswerById = async (req, reply) => {
+  try {
+    const { id } = req.params;
+    await instance.delete('/answers/' + id).then((res) => res.data);
+  } catch (err) {
+    reply.send(err);
+  }
+};
+
+const deleteUserById = async (req, reply) => {
+  try {
+    const { id } = req.params;
+    await instance.delete('/users/' + id).then((res) => res.data);
+  } catch (err) {
+    reply.send(err);
+  }
+};
+
 
 module.exports = {
   getAnswers,
   getUserById,
   getUsers,
   postAnswer,
+  postUser,
   deleteAnswers,
   deleteAnswerById,
+  deleteUserById,
 };
