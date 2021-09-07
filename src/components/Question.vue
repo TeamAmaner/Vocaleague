@@ -35,11 +35,12 @@
 
   <div id="main">
     <el-form @submit.prevent="submit">
-      <h1>問題：{{ lylic }}</h1>
-      <el-input v-model="message" name="Answer" placeholder="回答を入力"></el-input>
+      <h2>問題：{{ lylic }}</h2>
+      <el-input v-model="message" name="Answer" placeholder="回答を入力" clearable></el-input>
     <el-button @click="give">リロード</el-button>
     <el-button @click="submit">送信</el-button>
     </el-form>
+
     <el-dialog
       title="回答完了"
       v-model="success_dialog"
@@ -60,7 +61,6 @@
 
 <script>
 import axios from 'axios'
-const { webhook } = require('@/config.json')
 const { youtube, niconico } = require('@/question.json')
 // const path = require('path')
 
@@ -73,7 +73,7 @@ export default {
   data: () => ({
     success_dialog: false,
     message: null,
-    webhook_url: webhook,
+    webhook_url: process.env.VUE_APP_WEBHOOK,
     required: value => !!value || '解答は必須項目です。',
     lylic: '',
     answer: '',
@@ -108,17 +108,16 @@ export default {
       }
     },
     submit () {
-      if (this.$refs.messageForm.validate()) {
-        const data = {
-          username: this.userData.username,
-          avatar_url: `https://cdn.discordapp.com/avatars/${this.userData.id}/${this.userData.avatar}.png`,
-          content: this.message
-        }
-        axios.post(this.webhook_url, data).then(() => {
-          this.success_dialog = true
-          this.give()
-        })
+      const data = {
+        username: this.userData.username,
+        avatar_url: `https://cdn.discordapp.com/avatars/${this.userData.id}/${this.userData.avatar}.png`,
+        content: this.message
       }
+      axios.post(this.webhook_url, data).then(() => {
+        this.success_dialog = true
+        this.give()
+      })
+      this.message = ''
     },
     load () {
       this.userData = this.$cookies.get('userData')

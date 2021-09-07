@@ -9,8 +9,6 @@
 
 <script>
 
-const { clientId, clientSecret, port } = require('@/config.json')
-
 export default {
   name: 'Callback',
   created: function () {
@@ -22,15 +20,16 @@ export default {
         try {
           this.$cookies.remove('userData')
           const code = this.$route.query.code
+          console.warn(code)
           const oauthResult = await fetch('https://discord.com/api/oauth2/token', {
             method: 'POST',
             body: new URLSearchParams({
-              client_id: clientId,
-              client_secret: clientSecret,
+              client_id: process.env.VUE_APP_CLIENT_ID,
+              client_secret: process.env.VUE_APP_CLIENT_SECRET,
               code,
               grant_type: 'authorization_code',
-              redirect_uri: `http://localhost:${port}/callback`,
-              scope: 'identify'
+              redirect_uri: `http://localhost:8080/callback`,
+              scope: 'identify',
             }),
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded'
@@ -38,13 +37,15 @@ export default {
           })
 
           const oauthData = await oauthResult.json()
+          console.warn(oauthData)
+          console.log(`${oauthData.token_type} ${oauthData.access_token}`)
           const userResult = await fetch('https://discord.com/api/users/@me', {
             headers: {
               authorization: `${oauthData.token_type} ${oauthData.access_token}`
             }
           })
           const userData = await userResult.json()
-          // console.log(userData)
+          console.log(userData)
           this.saveUserData(userData)
           this.$router.push('/me')
         } catch (error) {

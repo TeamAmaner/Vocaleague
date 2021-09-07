@@ -12,8 +12,11 @@
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "element-plus": "^1.1.0-beta.8",
+    "fs": "^0.0.1-security",
+    "fs-extra": "^7.0.1",
     "vue": "^3.2.6",
     "vue-router": "^4.0.0-0",
+    "vue3-cookies": "^1.0.1",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
@@ -25,6 +28,7 @@
     "@vue/compiler-sfc": "^3.0.0",
     "babel-eslint": "^10.1.0",
     "concurrently": "^6.2.1",
+    "config": "^3.3.6",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
     "json-server": "^0.16.3"

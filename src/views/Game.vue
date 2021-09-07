@@ -25,7 +25,6 @@
 import Question from '@/components/Question'
 import Chat from '@/components/Chat'
 import axios from 'axios'
-const { clientId, webhook } = require('@/config.json')
 
 export default {
   name: 'Game',
@@ -35,12 +34,12 @@ export default {
   },
   created: function () {
     this.load()
-    // this.logon()
+    this.logon()
   },
   data: () => ({
     cannotFind: false,
     message: null,
-    webhook_url: webhook,
+    webhook_url: process.env.VUE_APP_WEBHOOK,
   }),
   methods: {
     logon () {
@@ -57,7 +56,7 @@ export default {
       console.log(this.userData)
     },
     login () {
-      window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback&response_type=code&scope=identify`
+      window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${process.env.VUE_APP_CLIENT_ID}&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback&response_type=code&scope=identify`
     }
   }
 }

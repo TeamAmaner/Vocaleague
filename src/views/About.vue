@@ -21,6 +21,7 @@
             </div>
           </li>
         </ul>
+        <el-button @click="saveFile">保存</el-button>
 
       </div>
 
@@ -31,6 +32,15 @@
 <script>
 import { ref } from 'vue';
 export default {
+  methods: {
+    saveFile: function () {
+      console.info('jsonを上書きする')
+      const masterJ = { a: ['aaa', 'bbb'], b: ['bbb', 'ccc'] }
+      const data = JSON.stringify(masterJ)
+      const fs = require('fs')
+      fs.writeFileSync('./myfile.json', JSON.stringify(data, null, 2))
+    }
+  },
   setup() {
     // newTodoをセット
     const newTodo = ref('');
