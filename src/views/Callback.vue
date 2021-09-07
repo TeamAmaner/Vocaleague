@@ -8,6 +8,7 @@
 </template>
 
 <script>
+const { clientId, clientSecret } = require('@/config.json');
 
 export default {
   name: 'Callback',
@@ -24,8 +25,8 @@ export default {
           const oauthResult = await fetch('https://discord.com/api/oauth2/token', {
             method: 'POST',
             body: new URLSearchParams({
-              client_id: process.env.VUE_APP_CLIENT_ID,
-              client_secret: process.env.VUE_APP_CLIENT_SECRET,
+              client_id: clientId,
+              client_secret: clientSecret,
               code,
               grant_type: 'authorization_code',
               redirect_uri: `http://localhost:8080/callback`,

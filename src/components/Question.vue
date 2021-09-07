@@ -62,6 +62,7 @@
 <script>
 import axios from 'axios'
 const { youtube, niconico } = require('@/question.json')
+const { webhook } = require('@/config.json');
 // const path = require('path')
 
 export default {
@@ -69,11 +70,13 @@ export default {
   created: function () {
     this.load()
     this.give()
+    console.log(youtube)
+    console.log(niconico)
   },
   data: () => ({
     success_dialog: false,
     message: null,
-    webhook_url: process.env.VUE_APP_WEBHOOK,
+    webhook_url: webhook,
     required: value => !!value || '解答は必須項目です。',
     lylic: '',
     answer: '',

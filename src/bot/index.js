@@ -84,7 +84,7 @@ async function addToJson (url, baseUrl, type, interaction) {
 			break;
 	}
 	const dataJ = {youtube: youtube, niconico: niconico};
-	fs.writeFileSync('../question.json', JSON.stringify(dataJ, null, 2));
+	fs.writeFileSync('./src/question.json', JSON.stringify(dataJ, null, 2));
 }
 
 client.login(token);
