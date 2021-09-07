@@ -6,11 +6,18 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "json-server": "json-server --watch ./src/db.json --port 8050"
+    "json-server": "json-server --watch ./src/db.json --port 8050",
+    "bot": "concurrently \"npm run bot-deploy\" \"npm run bot-start\"",
+    "bot-deploy": "node ./src/bot/deploy.js",
+    "bot-start": "node ./src/bot/index.js"
   },
   "dependencies": {
+    "@discordjs/rest": "^0.1.0-canary.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "discord-api-types": "^0.22.0",
+    "discord.js": "^13.1.0",
+    "dotenv": "^8.6.0",
     "element-plus": "^1.1.0-beta.8",
     "fs": "^0.0.1-security",
     "fs-extra": "^7.0.1",
