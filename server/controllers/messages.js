@@ -14,7 +14,6 @@ const getUserById = async (req, reply) => {
 
 const getUsers = async (req, reply) => {
   try {
-    console.log('よばれた')
     const sortByName = (a, b) => {
       if (a.name < b.name) {
         return -1;
@@ -87,16 +86,16 @@ const postAnswer = async (req, reply) => {
 
 const postUser = async (req, reply) => {
   try {
-    const { name, id, avatar_url } = req.body;
+    const { id, name, avatar_url } = req.body;
 
-    const msgData = {
-      name,
+    const usrData = {
       id,
-      avatar_url,
+      name,
+      avatar_url
     };
 
     const data = await instance
-      .post('/users', JSON.stringify(msgData), {
+      .post('/users', JSON.stringify(usrData), {
         headers: {
           'Content-Type': 'application/json',
         },

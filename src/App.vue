@@ -7,6 +7,16 @@
   <router-view/>
 </template>
 
+<script>
+const connection = new WebSocket('ws://localhost:8050')
+
+connection.onmessage = function (message) {
+  const data = JSON.parse(message.data);
+
+  console.warn(data)
+}
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

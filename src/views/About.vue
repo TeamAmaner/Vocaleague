@@ -19,8 +19,8 @@
         </el-form>
 
 
-        <dl v-for="(data, index) in datas" :key="data.id" >
-          <p>{{ index }}. {{ data.name }}: {{ data.answer }}</p>
+        <dl v-for="(data, index) in userList" :key="data.id" >
+          <p>{{ index }}. {{ data.name }}: {{ data.id }}</p>
         </dl>
 
       </div>
@@ -40,7 +40,8 @@ export default {
   name: 'About',
   data: () => ({
     datas: null,
-    ly: 'aaa'
+    ly: 'aaa',
+    userList: []
   }),
   methods: {
     got () {
@@ -56,11 +57,23 @@ export default {
       })
     },
     send () {
-      const { sendAnswer } = store();
-      sendAnswer('ばらばら', '686547120534454315', '名無し。')
+      // const { sendAnswer } = store();
+      // sendAnswer('ばらばら', '686547120534454315', '名無し。')
+      var there_it_is = false
+      for (const u of this.userList) {
+        if (u.id === '686547120534454315') {
+          console.info('idが一致した')
+          there_it_is = true
+        }
+      }
+      if (there_it_is === false) {
+        console.log('idは無かった')
+        const { userLogin } = store();
+        userLogin('名無し。', '686547120534454315', 'avatar_url')
+      }
     },
     dele () {
-      axios.delete('http://localhost:8050' + '/answers/' + '686547120534454315').then(res => {
+      axios.delete('http://localhost:8050' + '/users/' + '686547120534454315').then(res => {
         console.log(res.data)
       })
     },
@@ -81,6 +94,7 @@ export default {
     },
     show() {
       const { Users } = store()
+      this.userList = Users.value
       for (const u of Users.value) {
         console.log(u)
       }

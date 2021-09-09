@@ -15,11 +15,10 @@ const instance = axios.create({
 export default function () {
   const userLogin = async (name, id, avatar_url) => {
     try {
-      console.info(`${name} を追加`)
       await instance
         .post('/users', {
-          name,
           id,
+          name,
           avatar_url
         })
         .then((res) => connection.send(JSON.stringify(res.data)))
@@ -32,7 +31,6 @@ export default function () {
     try {
       const data = await instance.get('/users').then((res) => res.data)
       state.Users = data
-      // console.info(state.Users)
     } catch (err) {
       state.error = err
     }
