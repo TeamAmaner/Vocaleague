@@ -46,7 +46,7 @@ export default function () {
   }
 
   const addAnswer = async (msgData) => {
-    const userData = await getUserData(msgData.userId)
+    const userData = await getUserData(msgData.id)
 
     const data = {
       ...msgData,

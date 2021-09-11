@@ -1,38 +1,4 @@
 <template>
-  <!-- <v-container> -->
-    <!-- メッセージフォーム -->
-    <!-- <v-card class="mx-auto" max-width="800">
-      <v-card-text>
-        <v-card-title>問題：{{ lylic }}</v-card-title>
-        <v-form ref="messageForm">
-          <v-textarea v-model="message" :rules="[required]" label="解答"></v-textarea>
-        </v-form>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn @click="give">リロード</v-btn>
-        <v-btn @click="submit">送信</v-btn>
-      </v-card-actions>
-    </v-card> -->
-
-    <!-- ダイアログ -->
-    <!-- <v-dialog v-model="success_dialog" max-width="300">
-      <v-card>
-        <v-card-title>
-          <v-icon color="green">mdi-check-bold</v-icon>回答完了
-        </v-card-title>
-        <v-card-text>
-          送信されました。<br />
-          あなたの解答： {{ message }}<br />
-          時間が来るまでお待ちください。
-        </v-card-text>
-        <v-card-actions>
-          <v-btn @click="success_dialog=!success_dialog">OK</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-container> -->
-
   <div id="main">
     <el-form @submit.prevent="submit">
       <h2>問題：{{ lylic }}</h2>
@@ -61,9 +27,13 @@
 
 <script>
 import axios from 'axios'
+import { provide } from '@vue/runtime-core';
+
+import store from '@/store';
+provide('store', store);
+
 const { youtube, niconico } = require('@/question.json')
 const { webhook } = require('@/config.json');
-// const path = require('path')
 
 export default {
   name: 'Question',
@@ -109,6 +79,8 @@ export default {
       }
     },
     submit () {
+      const { sendAnswer } = store();
+      sendAnswer(this.message, String(this.userData.id), this.userData.username)
       const data = {
         username: this.userData.username,
         avatar_url: `https://cdn.discordapp.com/avatars/${this.userData.id}/${this.userData.avatar}.png`,

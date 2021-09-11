@@ -94,7 +94,7 @@ const postUser = async (req, reply) => {
       avatar_url
     };
 
-    const data = await instance
+    await instance
       .post('/users', JSON.stringify(usrData), {
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,6 @@ const postUser = async (req, reply) => {
       })
       .then((res) => res.data);
 
-    reply.code(201).send(data);
   } catch (err) {
     reply.send(err);
   }

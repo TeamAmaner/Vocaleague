@@ -1,6 +1,6 @@
 <template>
-  <dl v-for="(data, index) in userList" :key="data.id" >
-    <p>{{ index }}. {{ data.name }}: {{ data.id }}</p>
+  <dl v-for="data in Answers" :key="data.id" >
+    <p>{{ data.id }}. {{ data.name }}: {{ data.answer }}</p>
   </dl>
 
   <el-dialog
@@ -24,28 +24,46 @@ import { provide } from '@vue/runtime-core';
 import store from '@/store';
 provide('store', store);
 
+const { setUsers, getAnswers } = store()
+setUsers()
+getAnswers()
 
 export default {
   name: 'Chat',
   created: function () {
     this.load()
   },
+  setup() {
+    const { Answers } = store()
+
+    return {
+      Answers
+    }
+  },
   data: () => ({
-    ready: false,
+    ready: false
   }),
   methods: {
     load () {
-      const { setUsers } = store()
-      setUsers()
+      this.userData = this.$cookies.get('userData')
+      console.log(this.userData)
       this.ready = true
     },
     got () {
-      this.ready = false
       const { Users } = store()
-      this.userList = Users.value
+      var there_it_is = false
       for (const u of Users.value) {
-        console.log(u)
+        if (u.id === String(this.userData.id)) {
+          console.info('idが一致した')
+          there_it_is = true
+        }
       }
+      if (there_it_is === false) {
+        console.log('idは無かった')
+        const { userLogin } = store();
+        userLogin(this.userData.username, String(this.userData.id), `https://cdn.discordapp.com/avatars/${this.userData.id}/${this.userData.avatar}.png`)
+      }
+      this.ready = false
     }
   }
 }

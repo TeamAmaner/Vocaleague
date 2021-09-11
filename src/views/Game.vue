@@ -32,6 +32,17 @@ provide('store', store);
 
 const { webhook, clientId } = require('@/config.json');
 
+const { addAnswer } = store();
+
+const connection = new WebSocket('ws://localhost:8050')
+
+connection.onmessage = function (message) {
+  const data = JSON.parse(message.data);
+
+  addAnswer(data)
+
+}
+
 export default {
   name: 'Game',
   components: {
@@ -47,9 +58,6 @@ export default {
     message: null,
     webhook_url: webhook,
   }),
-  // beforeUnmount: function () {
-  //   // axios.delete('http://localhost:8050' + '/users/' + String(this.userData.id))
-  // },
   methods: {
     logon () {
       const data = {
