@@ -32,15 +32,26 @@ provide('store', store);
 
 const { webhook, clientId } = require('@/config.json');
 
-const { addAnswer } = store();
+const { addAnswer, gameStart, setQuestion } = store();
 
 const connection = new WebSocket('ws://localhost:8050')
 
 connection.onmessage = function (message) {
   const data = JSON.parse(message.data);
 
-  addAnswer(data)
-
+  switch (data.ready) {
+    case undefined:
+      addAnswer(data)
+      break;
+    case 'ready':
+      gameStart(data)
+      break;
+    case 'going':
+      setQuestion(data)
+      break;
+    default:
+      break;
+  }
 }
 
 export default {

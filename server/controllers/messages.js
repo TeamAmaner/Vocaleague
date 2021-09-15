@@ -84,6 +84,33 @@ const postAnswer = async (req, reply) => {
   }
 };
 
+const postQu = async (req, reply) => {
+  try {
+    const { id, ready, q, a, date } = req.body;
+
+    const msgData = {
+      id,
+      ready,
+      q,
+      a,
+      date,
+    };
+
+    const data = await instance
+      .post('/qus', JSON.stringify(msgData), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => res.data);
+
+    reply.code(201).send(data);
+  } catch (err) {
+    reply.send(err);
+  }
+};
+
+
 const postUser = async (req, reply) => {
   try {
     const { id, name, avatar_url } = req.body;
@@ -141,6 +168,7 @@ module.exports = {
   getUsers,
   postAnswer,
   postUser,
+  postQu,
   deleteAnswers,
   deleteAnswerById,
   deleteUserById,

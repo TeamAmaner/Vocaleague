@@ -4,6 +4,7 @@ const {
   getUsers,
   postAnswer,
   postUser,
+  postQu,
   deleteAnswers,
   deleteAnswerById,
   deleteUserById,
@@ -28,6 +29,18 @@ const User = {
     avatar_url: { type: 'string' },
   },
 };
+
+const Qu = {
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+    ready: { type: 'string' },
+    q: { type: 'string' },
+    a: { type: 'string' },
+    date: { type: 'string' },
+  }
+}
+
 
 // Options for /getUserById
 const getUserByIdOpts = {
@@ -91,6 +104,20 @@ const postUserOpts = {
   handler: postUser,
 };
 
+// Options for /postMessage
+const postQuOpts = {
+  schema: {
+    response: {
+      200: Qu,
+    },
+    response: {
+      201: Qu,
+    },
+  },
+  handler: postQu,
+};
+
+
 
 // Options for /postMessage
 const deleteAnswersOpts = {
@@ -121,6 +148,8 @@ function itemRoutes(fastify, options, done) {
   fastify.post('/answers', postAnswerOpts);
 
   fastify.post('/users', postUserOpts);
+
+  fastify.post('/qus', postQuOpts);
 
   fastify.delete('/answers', deleteAnswersOpts);
 

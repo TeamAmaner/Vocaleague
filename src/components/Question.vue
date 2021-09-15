@@ -59,7 +59,7 @@ export default {
       const song = resJson.items[0]
       // const song = songs[0];
       console.log(song)
-      this.lylic = song.lyrics[0].value.replace('\r', '').split('\n\n')[0]
+      this.lylic = song.lyrics[0].value.replace('\r', '').split('\n')[0]
       this.answer = song.defaultName
     },
     getURL () {

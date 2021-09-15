@@ -79,6 +79,28 @@ export default function () {
     }
   }
 
+  const gameStart = async (data) => {
+    try {
+      //
+      console.log('ゲームを開始します')
+      //
+      setQuestion(data)
+    } catch (err) {
+      state.error = err
+    }
+  }
+
+  const setQuestion = async (data) => {
+    try {
+      //
+      console.log('問題をセットします' + data)
+    } catch (err) {
+      state.error = err
+    }
+  }
+
+
+
   return {
     // States
     ...toRefs(state),
@@ -88,6 +110,9 @@ export default function () {
     getAnswers,
     userLogin,
     sendAnswer,
-    addAnswer
+    addAnswer,
+
+    gameStart,
+    setQuestion
   }
 }
