@@ -59,6 +59,20 @@ const getAnswers = async (req, reply) => {
   }
 };
 
+const getQus = async (req, reply) => {
+  try {
+
+    const Qus = await instance
+      .get(`/qus`)
+      .then((res) => res.data);
+
+    reply.send(Qus);
+  } catch (err) {
+    reply.send(err);
+    console.error(err.response);
+  }
+};
+
 const postAnswer = async (req, reply) => {
   try {
     const { id, answer, name, date } = req.body;
@@ -166,6 +180,7 @@ module.exports = {
   getAnswers,
   getUserById,
   getUsers,
+  getQus,
   postAnswer,
   postUser,
   postQu,

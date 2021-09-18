@@ -12,9 +12,14 @@ module.exports = {
     .setDescription('Vocaleagueを開始します')
     .setDefaultPermission(false),
 	async execute(interaction) {
-		await interaction.reply('ゲーム開始します')
 
     try {
+      const data = await instance.get('/qus').then((res) => res.data)
+      if (data[0] !== undefined) {
+        await interaction.reply('既にゲームは開始されています。');
+        return;
+      }
+      
       await instance
         .post('/qus', {
           id: '0',
@@ -23,7 +28,10 @@ module.exports = {
           a: '答え',
           date: new Date()
         })
-        .then((res) => connection.send(JSON.stringify(res.data)))
+        .then((res) => connection.send(JSON.stringify(res.data)));
+      await interaction.reply('ゲーム開始します');
+      return;
+
     } catch (err) {
       console.error(err)
     }

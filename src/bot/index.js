@@ -23,9 +23,7 @@ client.once('ready', async client => {
 			type: 'USER',
 			permission: true,
 		},
-	]})
-		.then(console.log)
-		.catch(console.error);
+	]}).catch(console.error);
 		
 	const mguild = await client.guilds.cache.get('840795339723767838');
 	// Block a role from the command permissions
@@ -35,9 +33,7 @@ client.once('ready', async client => {
 			type: 'USER',
 			permission: true,
 		},
-	]})
-		.then(console.log)
-		.catch(console.error);
+	]}).catch(console.error);
 
 	console.log('Ready!');
 });

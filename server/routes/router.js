@@ -2,6 +2,7 @@ const {
   getAnswers,
   getUserById,
   getUsers,
+  getQus,
   postAnswer,
   postUser,
   postQu,
@@ -78,6 +79,20 @@ const getAnswersOpts = {
   handler: getAnswers,
 };
 
+// Options for /getMessages
+const getQusOpts = {
+  schema: {
+    response: {
+      200: {
+        type: 'array',
+        message: Qu,
+      },
+    },
+  },
+  handler: getQus,
+};
+
+
 // Options for /postMessage
 const postAnswerOpts = {
   schema: {
@@ -143,6 +158,9 @@ function itemRoutes(fastify, options, done) {
 
   // Get users by channelId
   fastify.get('/users', getUsersOpts);
+
+  // Get users by channelId
+  fastify.get('/qus', getQusOpts);
 
   // Add message
   fastify.post('/answers', postAnswerOpts);
