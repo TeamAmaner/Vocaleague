@@ -9,7 +9,8 @@ const instance = axios.create({
 
 module.exports = {
 	data: new SlashCommandBuilder().setName('start')
-    .setDescription('Vocaleagueを開始します'),
+    .setDescription('Vocaleagueを開始します')
+    .setDefaultPermission(false),
 	async execute(interaction) {
 		await interaction.reply('ゲーム開始します')
 

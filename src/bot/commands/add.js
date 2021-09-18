@@ -8,7 +8,8 @@ module.exports = {
 		.addStringOption(
 			option => option
 				.setName('url')
-				.setDescription('追加する楽曲url\n追加できない可能性有り')),
+				.setDescription('追加する楽曲url\n追加できない可能性有り')
+				.setRequired(true)),
 	async execute(interaction) {
 
 		const url = interaction.options.getString('url')
