@@ -8,6 +8,7 @@ const state = reactive({
   Users: [],
   question: null,
   answer: null,
+  date: null,
 })
 const connection = new WebSocket('ws://localhost:8050')
 const instance = axios.create({
@@ -85,6 +86,8 @@ export default function () {
     try {
       state.question = data.q
       state.answer = data.a
+      console.log(data.date)
+      state.date = new Date(data.date)
     } catch (err) {
       state.error = err
     }
@@ -93,6 +96,7 @@ export default function () {
   const stopGame = () => {
     state.question = null
     state.answer = null
+    state.date = null
   }
 
 

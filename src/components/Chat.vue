@@ -2,6 +2,10 @@
   <dl v-for="data in Answers" :key="data.id" >
     <p>{{ data.id }}. {{ data.name }}: {{ data.answer }}</p>
   </dl>
+  <div v-if="date != null">
+    <h2>{{ date }}</h2>
+    <h3>{{ limit }}</h3>
+  </div>
 
   <el-dialog
     title="準備完了"
@@ -34,16 +38,30 @@ export default {
     this.load()
   },
   setup() {
-    const { Answers } = store()
-
+    const { Answers, date } = store()
+    
     return {
-      Answers
+      Answers,
+      date
     }
+
   },
   data: () => ({
-    ready: false
+    ready: false,
+    limit: 15
   }),
+  mounted() {
+    this.setDate()
+    setInterval(() => this.setDate(), 1000)
+  },
   methods: {
+    setDate() {
+      if (this.date !== null) {
+        const now = new Date()
+        const count = Number(now) - Number(this.date)
+        this.limit = 15 - Number(String(count).slice(0,-3))
+      }
+    },
     load () {
       this.userData = this.$cookies.get('userData')
       this.ready = true

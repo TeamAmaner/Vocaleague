@@ -85,11 +85,11 @@ const setQuestion = async () => {
         ready: 'going',
         q: songData.lylic,
         a: songData.answer,
-        date: data.date 
+        date: new Date()
       })
       .then((res) => connection.send(JSON.stringify(res.data)));
   } catch (err) {
-    state.error = err
+    console.error(err)
   }
 }
 
