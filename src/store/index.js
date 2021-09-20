@@ -5,7 +5,9 @@ const state = reactive({
   error: null,
   currentUser: {},
   Answers: [],
-  Users: []
+  Users: [],
+  question: null,
+  answer: null,
 })
 const connection = new WebSocket('ws://localhost:8050')
 const instance = axios.create({
@@ -79,26 +81,19 @@ export default function () {
     }
   }
 
-  const gameStart = async (data) => {
-    try {
-      //
-      console.log('ゲームを開始します')
-      //
-      setQuestion(data)
-    } catch (err) {
-      state.error = err
-    }
-  }
-
   const setQuestion = async (data) => {
     try {
-      //
-      console.log('問題をセットします' + data)
+      state.question = data.q
+      state.answer = data.a
     } catch (err) {
       state.error = err
     }
   }
 
+  const stopGame = () => {
+    state.question = null
+    state.answer = null
+  }
 
 
   return {
@@ -112,7 +107,7 @@ export default function () {
     sendAnswer,
     addAnswer,
 
-    gameStart,
-    setQuestion
+    setQuestion,
+    stopGame
   }
 }

@@ -46,7 +46,6 @@ export default {
   methods: {
     load () {
       this.userData = this.$cookies.get('userData')
-      console.log(this.userData)
       this.ready = true
     },
     got () {
@@ -54,7 +53,6 @@ export default {
       var there_it_is = false
       for (const u of Users.value) {
         if (u.id === String(this.userData.id)) {
-          console.info('idが一致した')
           there_it_is = true
         }
       }

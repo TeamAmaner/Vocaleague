@@ -3,9 +3,11 @@ const {
   getUserById,
   getUsers,
   getQus,
+  getQuById,
   postAnswer,
   postUser,
   postQu,
+  putQu,
   deleteAnswers,
   deleteAnswerById,
   deleteUserById,
@@ -92,6 +94,17 @@ const getQusOpts = {
   handler: getQus,
 };
 
+// Options for /getUserById
+const getQuByIdOpts = {
+  schema: {
+    response: {
+      200: Qu,
+    },
+  },
+  handler: getQuById,
+};
+
+
 
 // Options for /postMessage
 const postAnswerOpts = {
@@ -132,6 +145,19 @@ const postQuOpts = {
   handler: postQu,
 };
 
+// Options for /postMessage
+const putQuOpts = {
+  schema: {
+    response: {
+      200: Qu,
+    },
+    response: {
+      201: Qu,
+    },
+  },
+  handler: putQu,
+};
+
 
 
 // Options for /postMessage
@@ -162,12 +188,17 @@ function itemRoutes(fastify, options, done) {
   // Get users by channelId
   fastify.get('/qus', getQusOpts);
 
+  // Get user by userId
+  fastify.get('/qus/:id', getQuByIdOpts);
+
   // Add message
   fastify.post('/answers', postAnswerOpts);
 
   fastify.post('/users', postUserOpts);
 
   fastify.post('/qus', postQuOpts);
+
+  fastify.put('/qus/:id', putQuOpts);
 
   fastify.delete('/answers', deleteAnswersOpts);
 

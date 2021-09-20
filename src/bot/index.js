@@ -24,10 +24,24 @@ client.once('ready', async client => {
 			permission: true,
 		},
 	]}).catch(console.error);
+	guild.commands.permissions.add({ command: '889295725115113482', permissions: [
+		{
+			id: '653785595075887104',
+			type: 'USER',
+			permission: true,
+		},
+	]}).catch(console.error);
 		
 	const mguild = await client.guilds.cache.get('840795339723767838');
 	// Block a role from the command permissions
 	mguild.commands.permissions.add({ command: '886429836942385154', permissions: [
+		{
+			id: '653785595075887104',
+			type: 'USER',
+			permission: true,
+		},
+	]}).catch(console.error);
+	mguild.commands.permissions.add({ command: '889295724167200768', permissions: [
 		{
 			id: '653785595075887104',
 			type: 'USER',

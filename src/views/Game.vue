@@ -32,22 +32,24 @@ provide('store', store);
 
 const { webhook, clientId } = require('@/config.json');
 
-const { addAnswer, gameStart, setQuestion } = store();
+const { addAnswer, setQuestion, stopGame } = store();
 
 const connection = new WebSocket('ws://localhost:8050')
 
 connection.onmessage = function (message) {
   const data = JSON.parse(message.data);
+  
+  console.log(data)
 
   switch (data.ready) {
     case undefined:
       addAnswer(data)
       break;
-    case 'ready':
-      gameStart(data)
-      break;
     case 'going':
       setQuestion(data)
+      break;
+    case 'stop':
+      stopGame()
       break;
     default:
       break;
@@ -81,7 +83,6 @@ export default {
       if (!this.userData) {
         this.cannotFind = true
       }
-      console.log(this.userData)
     },
     login () {
       window.location.href = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fcallback&response_type=code&scope=identify`

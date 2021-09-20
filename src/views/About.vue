@@ -1,104 +1,117 @@
 <template>
-  <el-container>
-    <el-main>
-
-      <div class="todo-list">
-        <h1>Vue 3 Todo App</h1>
-        <el-form>
-          <el-input
-            v-model="newTodo"
-            name="newTodo"
-            placeholder="タスクを入力"
-            clearable
-            @keyup.enter="userSendMsg"
-          ></el-input>
-          <el-button @click="send">追加</el-button>
-          <el-button @click="check">取得</el-button>
-          <el-button @click="show">表示</el-button>
-          <el-button @click="dele">削除</el-button>
-        </el-form>
-
-
-        <dl v-for="(data, index) in userList" :key="data.id" >
-          <p>{{ index }}. {{ data.name }}: {{ data.id }}</p>
-        </dl>
-
+  <div>
+    <div class="container">
+      <p class="date">{{ year }}/{{ month }}/{{ day }}</p>
+      <div class="time">
+        <p class="time-item hours">{{ hours }}</p>
+        <p class="time-item minutes">{{ minutes }}</p>
+        <p class="time-item seconds">{{ seconds }}</p>
       </div>
-
-    </el-main>
-  </el-container>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios'
-import { provide } from '@vue/runtime-core';
-
-import store from '@/store';
-provide('store', store);
+const zeroPadding = (num, digit) => {
+  return (Array(digit).join("0") + num).slice(-digit)
+}
 
 export default {
-  name: 'About',
-  data: () => ({
-    datas: null,
-    ly: 'aaa',
-    userList: []
-  }),
-  methods: {
-    got () {
-      axios.get('http://localhost:8050' + '/answers', {
-        headers: {
-          'Content-Type': 'text/plane'
-        },
-        responseType: 'json'
-      }).then(res => {
-        const datas = res.data
-        console.info(datas)
-        return datas
-      })
-    },
-    send () {
-      // const { sendAnswer } = store();
-      // sendAnswer('ばらばら', '686547120534454315', '名無し。')
-      var there_it_is = false
-      for (const u of this.userList) {
-        if (u.id === '686547120534454315') {
-          console.info('idが一致した')
-          there_it_is = true
-        }
-      }
-      if (there_it_is === false) {
-        console.log('idは無かった')
-        const { userLogin } = store();
-        userLogin('名無し。', '686547120534454315', 'avatar_url')
-      }
-    },
-    dele () {
-      axios.delete('http://localhost:8050' + '/users/' + '686547120534454315').then(res => {
-        console.log(res.data)
-      })
-    },
-    check() {
-      const { setUsers } = store()
-      setUsers()
-      console.info('読み込んだ')
-      // const myId = this.userData.id
-      // const { currentUser, userLogin } = store()
-      // for (const u of currentUser) {
-      //   const userId = u.id
-      //   if (userId === myId) {
-      //     console.log('IDがありました')
-      //     return
-      //   }
-      // }
-      // userLogin(this.userData.username, String(this.userData.id), `https://cdn.discordapp.com/avatars/${this.userData.id}/${this.userData.avatar}.png`)
-    },
-    show() {
-      const { Users } = store()
-      this.userList = Users.value
-      for (const u of Users.value) {
-        console.log(u)
-      }
+  data() {
+    return {
+      date: new Date(),
     }
-  }
+  },
+  computed: {
+    year() {
+      return this.date.getFullYear()
+    },
+    month() {
+      return zeroPadding(this.date.getMonth() + 1, 2)
+    },
+    day() {
+      return zeroPadding(this.date.getDate(), 2)
+    },
+    hours() {
+      return zeroPadding(this.date.getHours(), 2)
+    },
+    minutes() {
+      return zeroPadding(this.date.getMinutes(), 2)
+    },
+    seconds() {
+      return zeroPadding(this.date.getSeconds(), 2)
+    },
+  },
+  mounted() {
+    this.setDate()
+    setInterval(() => this.setDate(), 1000)
+  },
+  methods: {
+    setDate() {
+      this.date = new Date()
+    },
+  },
 }
 </script>
+
+<style scoped>
+.container {
+  background-color: #0e75bd;
+  padding: 2%;
+}
+
+.date {
+  text-align: right;
+  color: #fff;
+  font-family: 'Teko', sans-serif;
+  font-size: 4rem;
+  letter-spacing: .1em;
+  margin: .0em 0;
+  line-height: 1;
+}
+
+.time {
+  display: flex;
+}
+
+.time-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1;
+  height: 100px;
+  position: relative;
+  z-index: 1;
+  padding: 0.5em;
+  margin: 3px;
+  color: #fff;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 3rem;
+  line-height: 1;
+  background-color: #33c7da;
+  box-sizing: border-box;
+}
+
+.time-item:before {
+  position: absolute;
+  right: 5px;
+  bottom: 1px;
+  z-index: 1;
+  color: #fff;
+  font-family: 'Teko', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: .05em;
+}
+
+.hours:before {
+  content: "Hours";
+}
+
+.minutes:before {
+  content: "Minutes";
+}
+
+.seconds:before {
+  content: "Seconds";
+}
+</style>

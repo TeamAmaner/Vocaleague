@@ -21,7 +21,6 @@ export default {
         try {
           this.$cookies.remove('userData')
           const code = this.$route.query.code
-          console.warn(code)
           const oauthResult = await fetch('https://discord.com/api/oauth2/token', {
             method: 'POST',
             body: new URLSearchParams({
@@ -38,15 +37,12 @@ export default {
           })
 
           const oauthData = await oauthResult.json()
-          console.warn(oauthData)
-          console.log(`${oauthData.token_type} ${oauthData.access_token}`)
           const userResult = await fetch('https://discord.com/api/users/@me', {
             headers: {
               authorization: `${oauthData.token_type} ${oauthData.access_token}`
             }
           })
           const userData = await userResult.json()
-          console.log(userData)
           this.saveUserData(userData)
           this.$router.push('/me')
         } catch (error) {

@@ -1,7 +1,10 @@
 <template>
   <div id="main">
-    <el-form @submit.prevent="submit">
-      <h2>問題：{{ lylic }}</h2>
+    <div v-if="question == null">
+      <h2>ゲーム開始まで待ってください。</h2>
+    </div>
+    <el-form @submit.prevent="submit" v-if="question != null">
+      <h2>問題：{{ question }}</h2>
       <el-input v-model="message" name="Answer" placeholder="回答を入力" clearable></el-input>
     <el-button @click="give">リロード</el-button>
     <el-button @click="submit">送信</el-button>
@@ -32,14 +35,13 @@ import { provide } from '@vue/runtime-core';
 import store from '@/store';
 provide('store', store);
 
-const { youtube, niconico } = require('@/question.json')
 const { webhook } = require('@/config.json');
 
 export default {
   name: 'Question',
   created: function () {
     this.load()
-    this.give()
+    // this.give()
   },
   data: () => ({
     success_dialog: false,
@@ -50,34 +52,14 @@ export default {
     answer: '',
     songURL: 'https://www.nicovideo.jp/watch/sm37420134'
   }),
+  setup() {
+    const { question } = store()
+
+    return {
+      question
+    }
+  },
   methods: {
-    async give () {
-      this.getURL()
-      const res = await fetch(`https://vocadb.net/api/songs?query=${this.songURL}&maxResults=1&fields=Lyrics`)
-      const resJson = await res.json()
-      // console.log(resJson)
-      const song = resJson.items[0]
-      // const song = songs[0];
-      console.log(song)
-      this.lylic = song.lyrics[0].value.replace('\r', '').split('\n')[0]
-      this.answer = song.defaultName
-    },
-    getURL () {
-      switch (Math.floor(Math.random() * 2)) {
-        case 0: {
-          const songIndex = Math.floor(Math.random() * youtube.length)
-          this.songURL = `https://www.youtube.com/watch?v=${youtube[songIndex]}`
-          break
-        }
-        case 1: {
-          const songIndex = Math.floor(Math.random() * niconico.length)
-          this.songURL = `https://www.nicovideo.jp/watch/${niconico[songIndex]}`
-          break
-        }
-        default:
-          break
-      }
-    },
     submit () {
       const { sendAnswer } = store();
       sendAnswer(this.message, String(this.userData.id), this.userData.username)
@@ -88,7 +70,6 @@ export default {
       }
       axios.post(this.webhook_url, data).then(() => {
         this.success_dialog = true
-        this.give()
       })
       this.message = ''
     },

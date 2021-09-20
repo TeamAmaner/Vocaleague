@@ -62,16 +62,28 @@ const getAnswers = async (req, reply) => {
 const getQus = async (req, reply) => {
   try {
 
-    const Qus = await instance
+    const data = await instance
       .get(`/qus`)
       .then((res) => res.data);
 
-    reply.send(Qus);
+    reply.send(data);
   } catch (err) {
     reply.send(err);
     console.error(err.response);
   }
 };
+
+const getQuById = async (req, reply) => {
+  try {
+    const { id } = req.params;
+    const data = await instance.get('/qus/' + id).then((res) => res.data);
+
+    reply.send(data);
+  } catch (err) {
+    reply.send(err);
+  }
+};
+
 
 const postAnswer = async (req, reply) => {
   try {
@@ -112,6 +124,32 @@ const postQu = async (req, reply) => {
 
     const data = await instance
       .post('/qus', JSON.stringify(msgData), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((res) => res.data);
+
+    reply.code(201).send(data);
+  } catch (err) {
+    reply.send(err);
+  }
+};
+
+const putQu = async (req, reply) => {
+  try {
+    const { id, ready, q, a, date } = req.body;
+
+    const msgData = {
+      id,
+      ready,
+      q,
+      a,
+      date,
+    };
+
+    const data = await instance
+      .put('/qus/' + id, JSON.stringify(msgData), {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -181,9 +219,11 @@ module.exports = {
   getUserById,
   getUsers,
   getQus,
+  getQuById,
   postAnswer,
   postUser,
   postQu,
+  putQu,
   deleteAnswers,
   deleteAnswerById,
   deleteUserById,

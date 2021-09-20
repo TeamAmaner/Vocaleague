@@ -27,6 +27,7 @@
     "fastify-websocket": "^3.2.0",
     "fs": "^0.0.1-security",
     "fs-extra": "^7.0.1",
+    "node-fetch": "^2.6.2",
     "vue": "^3.2.6",
     "vue-router": "^4.0.0-0",
     "vue3-cookies": "^1.0.1",
