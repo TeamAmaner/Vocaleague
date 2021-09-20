@@ -6,7 +6,6 @@
     <el-form @submit.prevent="submit" v-if="question != null">
       <h2>問題：{{ question }}</h2>
       <el-input v-model="message" name="Answer" placeholder="回答を入力" clearable></el-input>
-    <el-button @click="give">リロード</el-button>
     <el-button @click="submit">送信</el-button>
     </el-form>
 

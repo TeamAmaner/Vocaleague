@@ -17,24 +17,43 @@ module.exports = {
 	async execute(interaction) {
 
     try {
-      const data = await instance.get('/qus').then((res) => res.data)
-      if (data[0] !== undefined) {
+      const datas = await instance.get('/qus').then((res) => res.data)
+      const data = datas[0]
+      
+      const songData = await give();
+
+      if (data === undefined) {
+        await interaction.reply('ゲーム開始します');
+
+        await instance
+          .post('/qus', {
+            id: '0',
+            ready: 'going',
+            q: songData.lylic,
+            a: songData.answer,
+            date: new Date()
+          })
+          .then((res) => connection.send(JSON.stringify(res.data)));
+
+      } else if (data.ready === 'going') {
+
         await interaction.reply('既にゲームは開始されています。');
         return;
-      }
-      await interaction.reply('ゲーム開始します');
 
-      const songData = await give()
-      
-      await instance
-        .post('/qus', {
-          id: '0',
-          ready: 'going',
-          q: songData.lylic,
-          a: songData.answer,
-          date: new Date()
-        })
-        .then((res) => connection.send(JSON.stringify(res.data)));
+      } else if (data.ready === 'stop') {
+        await interaction.reply('ゲーム開始します');
+
+        await instance
+          .put('/qus/' + `0`, {
+            id: '0',
+            ready: 'going',
+            q: songData.lylic,
+            a: songData.answer,
+            date: new Date()
+          })
+          .then((res) => connection.send(JSON.stringify(res.data)));
+
+      }
 
       setq = setInterval(async () => setQuestion(), 20000)
 
