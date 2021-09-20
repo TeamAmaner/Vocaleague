@@ -1,7 +1,6 @@
 const fastify = require('fastify')({ logger: false });
 fastify.register(require('./routes/router'));
 
-// CORS for REST API
 fastify.register(require('fastify-cors'), { origin: true });
 
 /**
@@ -11,16 +10,15 @@ fastify.register(require('fastify-cors'), { origin: true });
 fastify.register(require('fastify-websocket'), {
   handle,
   options: {
-    maxPayload: 1048576, // we set the maximum allowed messages size to 1 MiB (1024 bytes * 1024 bytes)
+    maxPayload: 1048576,
     clientTracking: true,
   },
 });
 
 function handle(conn) {
-  conn.pipe(conn); // creates an echo server
+  conn.pipe(conn);
 }
 
-// We're adding our websocket connection here to gather data
 fastify.get('/', { websocket: true }, (connection, req) => {
   connection.socket.on('message', (data) => {
     try {

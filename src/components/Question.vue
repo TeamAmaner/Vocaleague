@@ -40,7 +40,6 @@ export default {
   name: 'Question',
   created: function () {
     this.load()
-    // this.give()
   },
   data: () => ({
     success_dialog: false,

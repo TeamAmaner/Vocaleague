@@ -46,8 +46,6 @@ export default {
           this.saveUserData(userData)
           this.$router.push('/me')
         } catch (error) {
-          // NOTE: An unauthorized token will not throw an error;
-          // it will return a 401 Unauthorized response in the try block above
           console.error(error)
         }
       }

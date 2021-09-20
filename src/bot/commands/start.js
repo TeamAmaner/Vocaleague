@@ -97,10 +97,7 @@ const give = async () => {
   const songURL = getURL()
   const res = await fetch(`https://vocadb.net/api/songs?query=${songURL}&maxResults=1&fields=Lyrics`)
   const resJson = await res.json()
-  // console.log(resJson)
   const song = resJson.items[0]
-  // const song = songs[0];
-  // console.log(song)
   const lylic = song.lyrics[0].value.replace('\r', '').split('\n')[0]
   const answer = song.defaultName
   return {

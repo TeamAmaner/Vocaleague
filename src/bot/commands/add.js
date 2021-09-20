@@ -32,7 +32,6 @@ module.exports = {
 			},
 			json: true
 		}, async function(err, req, data){
-			// console.info(data);
 	
 			try {
 				const song = data['items'][0];

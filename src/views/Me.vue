@@ -14,7 +14,6 @@ export default {
   name: 'Me',
   created: function () {
     this.load()
-    // this.submit()
   },
   data: () => ({
     success_dialog: false,

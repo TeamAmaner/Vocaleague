@@ -2,7 +2,7 @@
   <div>
     <Question/>
     <Chat/>
-    <!-- ログイン -->
+    
     <el-dialog
       title="ログインを行ってください"
       v-model="cannotFind"
