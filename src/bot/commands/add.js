@@ -11,7 +11,7 @@ module.exports = {
 				.setDescription('追加する楽曲url\n追加できない可能性有り')
 				.setRequired(true)),
 	async execute(interaction) {
-
+		
 		const url = interaction.options.getString('url')
 		if (!url) {
 			await interaction.reply("楽曲urlを指定してね\nusage: /add [ Youtube_url | NicoNico_url ]")
@@ -32,22 +32,24 @@ module.exports = {
 			},
 			json: true
 		}, async function(err, req, data){
-	
+
+			const song = data.items[0];
+
 			try {
-				const song = data['items'][0];
-				const lylic = song['lyrics'][0]['value'].replace('\r', '').split('\n\n')[0];
+				const so = data['items'][0];
+				const ly = so['lyrics'][0]['value'].replace('\r', '').split('\n\n')[0];
 			} catch (err) {
 				await interaction.reply(`${url}\nこの楽曲は追加できませんでした`);
 				return;
 			}
 			if (url.startsWith('https://www.nicovideo.jp/watch/')) {
-				await addToJson(url, 'https://www.nicovideo.jp/watch/', 'niconico', interaction);
+				await addToJson(url, 'https://www.nicovideo.jp/watch/', 'niconico', interaction, song);
 			} else if (url.startsWith('http://nico.ms/')) {
-				await addToJson(url, 'http://nico.ms/', 'niconico', interaction);
+				await addToJson(url, 'http://nico.ms/', 'niconico', interaction, song);
 			} else if (url.startsWith('https://www.youtube.com/watch?v=')) {
-				await addToJson(url, 'https://www.youtube.com/watch?v=', 'youtube', interaction);
+				await addToJson(url, 'https://www.youtube.com/watch?v=', 'youtube', interaction, song);
 			} else if (url.startsWith('https://youtu.be/')) {
-				await addToJson(url, 'https://youtu.be/', 'youtube', interaction);
+				await addToJson(url, 'https://youtu.be/', 'youtube', interaction, song);
 			}
 			if (interaction.replied) {return;}
 			await interaction.reply(`__**${data.items[0].name}**__ が正常に追加されました`);
@@ -57,25 +59,31 @@ module.exports = {
 	},
 };
 
-async function addToJson (url, baseUrl, type, interaction) {
+async function addToJson (url, baseUrl, type, interaction, song) {
 	const { youtube, niconico } = require('../../question.json')
 	const songid = url.replace(baseUrl, '')
+  const lylic = song.lyrics[0].value
+  const answer = song.defaultName
 	switch (type) {
 		case 'niconico':
 			const nicoid = songid.split('?')[0];
-			if (niconico.indexOf(nicoid) !== -1) {
-				await interaction.reply('この曲は既に追加されてます');
-			} else {
-				niconico.push(nicoid);
+			for (n of niconico) {
+				if (n.id === nicoid) {
+					await interaction.reply('この曲は既に追加されてます');
+					return;
+				}
 			}
+			niconico.push({"id": nicoid,"title": answer,"lylic": lylic});
 			break;
 		case 'youtube':
 			const youid = songid.split('&')[0];
-			if (youtube.indexOf(youid) !== -1) {
-				await interaction.reply('この曲は既に追加されてます');
-			} else {
-				youtube.push(youid);
+			for (y of youtube) {
+				if (y.id === youid) {
+					await interaction.reply('この曲は既に追加されてます');
+					return;
+				}
 			}
+			youtube.push({"id": youid,"title": answer,"lylic": lylic});
 			break;
 		default:
 			await interaction.reply('エラーが発生しました。')

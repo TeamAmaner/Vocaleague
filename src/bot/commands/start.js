@@ -95,38 +95,35 @@ const setQuestion = async () => {
 }
 
 const give = async () => {
-  const songURL = getURL()
-  const res = await fetch(`https://vocadb.net/api/songs?query=${songURL}&maxResults=1&fields=Lyrics`)
-  const resJson = await res.json()
-  const song = resJson.items[0]
-  const lylic = song.lyrics[0].value.replace('\r', '').split('\n')[0]
-  const answer = song.defaultName
+  const songData = getData()
+  const lylic = songData.lylic.replace('\r', '').split('\n')[0]
+  const answer = songData.title
   return {
     lylic,
     answer
   }
 }
 
-const getURL = () => {
-  var songURL = ''
+const getData = () => {
+  var songData = {};
   
   const { youtube, niconico } = require('../../question.json')
 
   switch (Math.floor(Math.random() * 2)) {
     case 0: {
       const songIndex = Math.floor(Math.random() * youtube.length)
-      songURL = `https://www.youtube.com/watch?v=${youtube[songIndex]}`
+      songData = youtube[songIndex]
       break
     }
     case 1: {
       const songIndex = Math.floor(Math.random() * niconico.length)
-      songURL = `https://www.nicovideo.jp/watch/${niconico[songIndex]}`
+      songData = niconico[songIndex]
       break
     }
     default:
       break
   }
-  return songURL
+  return songData
 }
 
 const sendPose = async () => {
