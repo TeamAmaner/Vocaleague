@@ -88,6 +88,7 @@ const setQuestion = async () => {
         date: new Date()
       })
       .then((res) => connection.send(JSON.stringify(res.data)));
+    // setTimeout('await sendPose()', 14000);
   } catch (err) {
     console.error(err)
   }
@@ -126,4 +127,29 @@ const getURL = () => {
       break
   }
   return songURL
+}
+
+const sendPose = async () => {
+  try {
+    const data = await instance.get('/qus').then((res) => res.data)
+    if (data[0] === undefined) {return;}
+
+    const songData = data[0]
+    
+    await instance
+      .put('/qus/' + '0', {
+        id: '0',
+        ready: 'pose',
+        q: songData.q,
+        a: songData.a,
+        date: songData.date
+      })
+      .then((res) => connection.send(JSON.stringify(res.data)));
+
+    return;
+
+  } catch (err) {
+    console.error(err)
+  }
+
 }

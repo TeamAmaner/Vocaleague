@@ -4,7 +4,7 @@ import axios from 'axios'
 const state = reactive({
   error: null,
   currentUser: {},
-  Answers: [],
+  Answers: null,
   Users: [],
   question: null,
   answer: null,
@@ -88,6 +88,7 @@ export default function () {
       state.answer = data.a
       console.log(data.date)
       state.date = new Date(data.date)
+      state.Answers = null
     } catch (err) {
       state.error = err
     }
@@ -97,6 +98,11 @@ export default function () {
     state.question = null
     state.answer = null
     state.date = null
+  }
+
+  const poseGame = () => {
+    getAnswers()
+    //
   }
 
 
@@ -112,6 +118,7 @@ export default function () {
     addAnswer,
 
     setQuestion,
-    stopGame
+    stopGame,
+    poseGame
   }
 }

@@ -30,9 +30,10 @@ import { provide } from '@vue/runtime-core';
 import store from '@/store';
 provide('store', store);
 
+
 const { webhook, clientId } = require('@/config.json');
 
-const { addAnswer, setQuestion, stopGame } = store();
+const { setUsers, addAnswer, setQuestion, stopGame } = store();
 
 const connection = new WebSocket('ws://localhost:8050')
 
@@ -65,6 +66,7 @@ export default {
   created: function () {
     this.load()
     this.logon()
+    setUsers()
   },
   data: () => ({
     cannotFind: false,
