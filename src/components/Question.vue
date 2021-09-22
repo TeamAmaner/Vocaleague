@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <div v-if="limit >= 0">
+    <div v-if="limit > 0">
       <div v-if="question == null">
         <h2>ゲーム開始まで待ってください。</h2>
       </div>
@@ -11,7 +11,7 @@
       <el-button @click="submit">送信</el-button>
       </el-form>
     </div>
-    <div v-if="limit < 0">
+    <div v-if="limit <= 0">
       <h2>
         回答時間が終了しました。<br>
         <span style="color:#008000">正解は緑色  </span>

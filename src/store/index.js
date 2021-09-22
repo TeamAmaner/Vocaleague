@@ -86,7 +86,6 @@ export default function () {
     try {
       state.question = data.q
       state.answer = data.a
-      console.log(data.date)
       state.date = new Date(data.date)
       state.Answers = null
     } catch (err) {

@@ -13,41 +13,41 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', async client => {
-	if (!client.application?.owner) await client.application?.fetch();
+	// if (!client.application?.owner) await client.application?.fetch();
 
-	const guild = await client.guilds.cache.get('864657174881370112');
+	// const guild = await client.guilds.cache.get('864657174881370112');
 	
-	guild.commands.permissions.add({ command: '886183658417979412', permissions: [
-		{
-			id: '653785595075887104',
-			type: 'USER',
-			permission: true,
-		},
-	]}).catch(console.error);
-	guild.commands.permissions.add({ command: '889295725115113482', permissions: [
-		{
-			id: '653785595075887104',
-			type: 'USER',
-			permission: true,
-		},
-	]}).catch(console.error);
+	// guild.commands.permissions.add({ command: '886183658417979412', permissions: [
+	// 	{
+	// 		id: '653785595075887104',
+	// 		type: 'USER',
+	// 		permission: true,
+	// 	},
+	// ]}).catch(console.error);
+	// guild.commands.permissions.add({ command: '889295725115113482', permissions: [
+	// 	{
+	// 		id: '653785595075887104',
+	// 		type: 'USER',
+	// 		permission: true,
+	// 	},
+	// ]}).catch(console.error);
 		
-	const mguild = await client.guilds.cache.get('840795339723767838');
+	// const mguild = await client.guilds.cache.get('840795339723767838');
 	
-	mguild.commands.permissions.add({ command: '886429836942385154', permissions: [
-		{
-			id: '653785595075887104',
-			type: 'USER',
-			permission: true,
-		},
-	]}).catch(console.error);
-	mguild.commands.permissions.add({ command: '889295724167200768', permissions: [
-		{
-			id: '653785595075887104',
-			type: 'USER',
-			permission: true,
-		},
-	]}).catch(console.error);
+	// mguild.commands.permissions.add({ command: '886429836942385154', permissions: [
+	// 	{
+	// 		id: '653785595075887104',
+	// 		type: 'USER',
+	// 		permission: true,
+	// 	},
+	// ]}).catch(console.error);
+	// mguild.commands.permissions.add({ command: '889295724167200768', permissions: [
+	// 	{
+	// 		id: '653785595075887104',
+	// 		type: 'USER',
+	// 		permission: true,
+	// 	},
+	// ]}).catch(console.error);
 
 	console.log('Ready!');
 });

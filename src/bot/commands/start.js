@@ -13,7 +13,7 @@ var setq = null
 module.exports = {
 	data: new SlashCommandBuilder().setName('start')
     .setDescription('Vocaleagueを開始します')
-    .setDefaultPermission(false),
+    .setDefaultPermission(true),
 	async execute(interaction) {
 
     try {
@@ -55,7 +55,7 @@ module.exports = {
 
       }
 
-      setq = setInterval(async () => setQuestion(), 20000)
+      setq = setInterval(async () => setQuestion(), 25000)
 
       return;
 
@@ -96,8 +96,12 @@ const setQuestion = async () => {
 
 const give = async () => {
   const songData = getData()
-  const lylic = songData.lylic.replace('\r', '').split('\n')[0]
   const answer = songData.title
+
+  const lylicBase = songData.lylic.replace('\r', '').split('\n').filter(v => v)
+  const songIndex = Math.floor(Math.random() * lylicBase.length)
+  const lylic = lylicBase[songIndex]
+
   return {
     lylic,
     answer
