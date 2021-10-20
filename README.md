@@ -1,5 +1,18 @@
 # vocaleague
 
+## Start the Game
+```
+npm run database
+```
+
+```
+npm run bot
+```
+
+```
+npm run serve
+```
+
 ## Project setup
 ```
 npm install
